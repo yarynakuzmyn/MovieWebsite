@@ -46,13 +46,10 @@ try {
                 <?php foreach ($search_results as $movie): ?>
                     <div class="movie-card">
                     <a href="movie_details.php?id=<?php echo $movie['id']; ?>">
-                        
                             <img src="<?php echo ($movie['image']); ?>" class="card-img-top" alt="<?php echo ($movie['title_ukr']); ?>">
                             <div class="card-body">
                                 <h5 class="card-title"><?php echo ($movie['title_ukr']); ?></h5>
                                 <p class="card-text"><?php echo ($movie['title_orig']); ?></p>
-                                
-                            
                         </div></a>
                     </div>
                 <?php endforeach; ?>

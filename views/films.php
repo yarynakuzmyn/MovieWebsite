@@ -139,5 +139,4 @@
     </main>
     <?php include __DIR__ . '/template/footer.html'; ?>
 </body>
-
 </html>
