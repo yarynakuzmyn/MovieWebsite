@@ -9,7 +9,7 @@
     $movie_id = $_GET['id'];
 
     try {
-        $stmt = $pdo->prepare("SELECT m.id, m.title_ukr, m.title_orig, m.description, m.image, m.year, c.name AS country, GROUP_CONCAT(g.name SEPARATOR ', ') AS genres, m.trailer_url
+        $stmt = $pdo->prepare("SELECT m.id, m.title_ukr, m.title_orig, m.description, m.image, m.year, c.name AS country, GROUP_CONCAT(DISTINCT g.name SEPARATOR ', ') AS genres, m.trailer_url
                             FROM movies m
                             LEFT JOIN movie_country mc ON m.id = mc.movie_id
                             LEFT JOIN countries c ON mc.country_id = c.id
