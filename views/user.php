@@ -224,33 +224,33 @@ $favorites = getUserFavorites($pdo, $user_id);
                         </div>
 
                         <!-- Ratings Tab -->
-                        <div class="movie-grid tab-pane fade" id="v-pills-rating" role="tabpanel"
-                            aria-labelledby="v-pills-rating-tab">
+                        <div class="movie-grid tab-pane fade" id="v-pills-rating" role="tabpanel" aria-labelledby="v-pills-rating-tab">
                             <h3><i class="bi bi-star mr-2"></i> Оцінки</h3>
                             <div class="movie-list">
                                 <?php foreach ($ratings as $item): ?>
-                                <div class="movie-card">
-                                    <img src="<?php echo ($item['image']); ?>" class="card-img-top"
-                                        alt="<?php echo ($item['title_ukr']); ?>">
-                                    <div class="card-body">
-                                        <h3 class="card-title"><?php echo ($item['title_ukr']); ?>
-                                        </h3>
-                                        <p class="card-text">
-                                            <small class="text-muted">
-                                                <?php
-                                                        $rating = intval($item['rating']);
-                                                        for ($i = 1; $i <= 5; $i++) {
-                                                            if ($i <= $rating) {
-                                                                echo '<i class="bi bi-star text-warning"></i>';
-                                                            } else {
-                                                                echo '<i class="bi bi-star text-secondary"></i>';
-                                                            }
+                                <a href="movie_details.php?id=<?php echo $item['id']; ?>" class="movie-link">
+                                    <div class="movie-card">
+                                        <img src="<?php echo htmlspecialchars($item['image']); ?>" class="card-img-top"
+                                            alt="<?php echo htmlspecialchars($item['title_ukr']); ?>">
+                                        <div class="card-body">
+                                            <h3 class="card-title"><?php echo htmlspecialchars($item['title_ukr']); ?></h3>
+                                            <p class="card-text">
+                                                <small class="text-muted">
+                                                    <?php
+                                                    $rating = intval($item['rating']);
+                                                    for ($i = 1; $i <= 5; $i++) {
+                                                        if ($i <= $rating) {
+                                                            echo '<i class="bi bi-star-fill text-warning"></i>';
+                                                        } else {
+                                                            echo '<i class="bi bi-star text-secondary"></i>';
                                                         }
+                                                    }
                                                     ?>
-                                            </small>
-                                        </p>
+                                                </small>
+                                            </p>
+                                        </div>
                                     </div>
-                                </div>
+                                </a>
                                 <?php endforeach; ?>
                             </div>
                         </div>
@@ -261,6 +261,7 @@ $favorites = getUserFavorites($pdo, $user_id);
                             <h3><i class="bi bi-chat-right-dots"></i>Відгуки</h3>
                             <div class="movie-list">
                                 <?php foreach ($reviews as $item): ?>
+                                <a href="movie_details.php?id=<?php echo $item['id']; ?>" class="movie-link">
                                 <div class="movie-card">
                                     <img src="<?php echo ($item['image']); ?>" class="card-img-top"
                                         alt="<?php echo ($item['title_ukr']); ?>">
@@ -272,6 +273,7 @@ $favorites = getUserFavorites($pdo, $user_id);
                                         </h4>
                                     </div>
                                 </div>
+                                </a>
                                 <?php endforeach; ?>
                             </div>
                         </div>
@@ -282,6 +284,7 @@ $favorites = getUserFavorites($pdo, $user_id);
                             <h3><i class="fas fa-eye mr-2"></i>Переглянуто</h3>
                             <div class="movie-list">
                                 <?php foreach ($watched as $movie): ?>
+                                <a href="movie_details.php?id=<?php echo $movie['id']; ?>" class="movie-link">
                                 <div class="movie-card">
                                     <img src="<?php echo($movie['image']); ?>" class="card-img-top"
                                         alt="<?php echo($movie['title_ukr']); ?>">
@@ -292,6 +295,7 @@ $favorites = getUserFavorites($pdo, $user_id);
 
                                     </div>
                                 </div>
+                                </a>
                                 <?php endforeach; ?>
                             </div>
                         </div>
@@ -302,6 +306,7 @@ $favorites = getUserFavorites($pdo, $user_id);
                             <h3><i class="fas fa-eye mr-2"></i>Дивлюся</h3>
                             <div class="movie-list">
                                 <?php foreach ($watching as $movie): ?>
+                                <a href="movie_details.php?id=<?php echo $movie['id']; ?>" class="movie-link">
                                 <div class="movie-card">
                                     <img src="<?php echo ($movie['image']); ?>" class="card-img-top"
                                         alt="<?php echo ($movie['title_ukr']); ?>">
@@ -312,6 +317,7 @@ $favorites = getUserFavorites($pdo, $user_id);
 
                                     </div>
                                 </div>
+                                </a>
                                 <?php endforeach; ?>
                             </div>
                         </div>
@@ -322,6 +328,7 @@ $favorites = getUserFavorites($pdo, $user_id);
                             <h3><i class="fas fa-eye mr-2"></i>Буду дивитися</h3>
                             <div class="movie-list">
                                 <?php foreach ($watchlist as $movie): ?>
+                                <a href="movie_details.php?id=<?php echo $movie['id']; ?>" class="movie-link">
                                 <div class="movie-card">
                                     <img src="<?php echo ($movie['image']); ?>" class="card-img-top"
                                         alt="<?php echo ($movie['title_ukr']); ?>">
@@ -331,6 +338,7 @@ $favorites = getUserFavorites($pdo, $user_id);
                                         <p><?php echo($movie['title_orig']); ?></p>
                                     </div>
                                 </div>
+                                </a>
                                 <?php endforeach; ?>
                             </div>
                         </div>
@@ -341,6 +349,7 @@ $favorites = getUserFavorites($pdo, $user_id);
                             <h3><i class="fas fa-heart mr-2"></i>Улюблені</h3>
                             <div class="movie-list">
                                 <?php foreach ($favorites as $movie): ?>
+                                <a href="movie_details.php?id=<?php echo $movie['id']; ?>" class="movie-link">
                                 <div class="movie-card">
                                     <img src="<?php echo ($movie['image']); ?>" class="card-img-top"
                                         alt="<?php echo ($movie['title_ukr']); ?>">
@@ -350,6 +359,7 @@ $favorites = getUserFavorites($pdo, $user_id);
                                         <p><?php echo($movie['title_orig']); ?></p>
                                     </div>
                                 </div>
+                                </a>
                                 <?php endforeach; ?>
                             </div>
                         </div>
