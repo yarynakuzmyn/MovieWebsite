@@ -3,19 +3,30 @@
     session_start();
 
     try {
-        $stmt = $pdo->prepare("SELECT * FROM movies WHERE type = 'film' ORDER BY RAND() DESC LIMIT 5");
+        //Popular movies
+        $stmt = $pdo->prepare("
+            SELECT m.*, AVG(r.rating) as avg_rating, COUNT(r.id) as review_count
+            FROM movies m
+            LEFT JOIN reviews r ON m.id = r.movie_id
+            GROUP BY m.id
+            HAVING review_count > 0
+            ORDER BY avg_rating DESC, review_count DESC
+            LIMIT 5
+        ");
+        $stmt->execute();
+        $popular_movies = $stmt->fetchAll(PDO::FETCH_ASSOC);
+    
+        //Rrandom films
+        $stmt = $pdo->prepare("SELECT * FROM movies WHERE type = 'film' ORDER BY RAND() LIMIT 5");
         $stmt->execute();
         $films = $stmt->fetchAll(PDO::FETCH_ASSOC);
-
-        $stmt = $pdo->prepare("SELECT * FROM movies WHERE type = 'series' ORDER BY RAND() DESC LIMIT 5");
+    
+        //Random series
+        $stmt = $pdo->prepare("SELECT * FROM movies WHERE type = 'series' ORDER BY RAND() LIMIT 5");
         $stmt->execute();
         $series = $stmt->fetchAll(PDO::FETCH_ASSOC);
-    } catch (PDOException $e) {
-        echo "Error: " . $e->getMessage();
-    }
-
-    // Fetch 3 random movies for the carousel
-    try {
+    
+        //3 random movies for the carousel
         $stmt = $pdo->prepare("SELECT id, title_ukr, carousel FROM movies ORDER BY RAND() LIMIT 3");
         $stmt->execute();
         $carouselMovies = $stmt->fetchAll(PDO::FETCH_ASSOC);
@@ -49,8 +60,8 @@
         <?php foreach ($carouselMovies as $index => $movie): ?>
             <div class="carousel-item <?php echo $index === 0 ? 'active' : ''; ?>">
                 <a href="movie_details.php?id=<?php echo $movie['id']; ?>">
-                    <img src="<?php echo htmlspecialchars($movie['carousel']); ?>" 
-                         alt="<?php echo htmlspecialchars($movie['title_ukr']); ?>" 
+                    <img src="<?php echo($movie['carousel']); ?>" 
+                         alt="<?php echo($movie['title_ukr']); ?>" 
                          class="d-block w-100" />
                 </a>
             </div>
@@ -70,7 +81,22 @@
 </div>
 
         <section class="content">
-            <h2>Popular</h2>
+            <h2>Популярне</h2>
+            <div class="movie-grid">
+                <div class="movie-list">
+                    <?php foreach ($popular_movies as $movie): ?>
+                    <div class="movie-card">
+                        <a href="movie_details.php?id=<?php echo ($movie['id']); ?>">
+                            <img src="<?php echo ($movie['image']); ?>" alt="<?php echo ($movie['title_ukr']); ?>" />
+                            <h3><?php echo ($movie['title_ukr']); ?></h3>
+                            <p><?php echo ($movie['title_orig']); ?></p>
+                        </a>
+                    </div>
+                    <?php endforeach; ?>
+                </div>
+            </div>
+
+            <h2>Фільми</h2>
             <div class="movie-grid">
                 <div class="movie-list">
                     <?php foreach ($films as $film): ?>
@@ -85,22 +111,7 @@
                 </div>
             </div>
 
-            <h2>Movies</h2>
-            <div class="movie-grid">
-                <div class="movie-list">
-                    <?php foreach ($films as $film): ?>
-                    <div class="movie-card">
-                        <a href="movie_details.php?id=<?php echo ($film['id']); ?>">
-                            <img src="<?php echo ($film['image']); ?>" alt="<?php echo ($film['title_ukr']); ?>" />
-                            <h3><?php echo ($film['title_ukr']); ?></h3>
-                            <p><?php echo ($film['title_orig']); ?></p>
-                        </a>
-                    </div>
-                    <?php endforeach; ?>
-                </div>
-            </div>
-
-            <h2>Serials</h2>
+            <h2>Серіали</h2>
             <div class="movie-grid">
                 <div class="movie-list">
                     <?php foreach ($series as $serial): ?>
