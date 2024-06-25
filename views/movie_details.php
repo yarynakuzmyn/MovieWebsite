@@ -28,6 +28,19 @@
         echo "Error: " . $e->getMessage();
         exit;
     }
+
+    $rating_query = "SELECT AVG(rating) as avg_rating FROM reviews WHERE movie_id = ?";
+    $rating_stmt = $pdo->prepare($rating_query);
+    $rating_stmt->execute([$movie_id]);
+    $avg_rating = $rating_stmt->fetch(PDO::FETCH_ASSOC)['avg_rating'];
+
+    $reviews_query = "SELECT r.*, u.username FROM reviews r 
+                  JOIN users u ON r.user_id = u.id 
+                  WHERE r.movie_id = ?
+                  ORDER BY r.created_at DESC";
+    $reviews_stmt = $pdo->prepare($reviews_query);
+    $reviews_stmt->execute([$movie_id]);
+    $reviews = $reviews_stmt->fetchAll(PDO::FETCH_ASSOC);
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -84,8 +97,41 @@
     }
 
     .btn.active {
-        background-color: #000;
+        background-color: #333;
         color: #fff;
+        border-color: #333;
+    }
+
+    .reviews {
+        margin-top: 30px;
+    }
+
+    .review-frame {
+        border: 1px solid #ddd;
+        border-radius: 8px;
+        padding: 15px;
+        margin-bottom: 20px;
+        background-color: #f9f9f9;
+    }
+
+    .review-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 10px;
+    }
+
+    .review-date {
+        font-size: 0.9em;
+        color: #777;
+    }
+
+    .review-rating {
+        margin-bottom: 10px;
+    }
+
+    .review-content {
+        margin-bottom: 0;
     }
     </style>
 </head>
@@ -104,7 +150,13 @@
                 <div class="info">
                     <h1 id="movie-title" data-movie-id="<?php echo ($movie_id); ?>">
                         <?php echo ($movie['title_ukr']); ?> <i class="bi bi-heart" id="add-to-favorites"
-                            type="button"></i></h1>
+                            type="button"></i>
+                        <span class="average-rating" style="float: right; ">
+                            <p
+                                style="padding: 5px 10px; font-size: 24px; color:white; background-color: #0d6efd; border-radius: 8px;">
+                                <?php echo number_format($avg_rating, 1); ?></p>
+                        </span>
+                    </h1>
 
                     <p id="movie-year"><strong>Рік:</strong> <?php echo ($movie['year']); ?></p>
                     <p id="movie-genre"><strong>Жанр:</strong> <?php echo ($movie['genres']); ?></p>
@@ -137,18 +189,30 @@
                     <iframe src="<?php echo ($movie['trailer_url']); ?>" frameborder="0" allowfullscreen
                         class="embed-responsive-item"></iframe>
                 </div>
-                <h3 class="mt-4">Кадри</h3>
-                <div class="stills row">
-                    <div class="col-md-2">
-                        <img src="<?php echo ($movie['image']); ?>" alt="Кадр з фільму" class="img-fluid" />
+            </div>
+            <div class="reviews">
+                <h3>Відгуки</h3>
+                <?php foreach ($reviews as $review): ?>
+                <div class="review-frame">
+                    <div class="review-header">
+                        <strong><?php echo htmlspecialchars($review['username']); ?></strong>
+                        <span class="review-date"><?php echo date('M d, Y', strtotime($review['created_at'])); ?></span>
                     </div>
-                    <div class="col-md-2">
-                        <img src="<?php echo ($movie['image']); ?>" alt="Кадр з фільму" class="img-fluid" />
+                    <div class="review-rating">
+                        <?php
+                            $rating = intval($review['rating']);
+                            for ($i = 1; $i <= 5; $i++) {
+                                if ($i <= $rating) {
+                                    echo '<i class="bi bi-star-fill text-warning"></i>';
+                                } else {
+                                    echo '<i class="bi bi-star text-secondary"></i>';
+                                }
+                            }
+                        ?>
                     </div>
-                    <div class="col-md-2">
-                        <img src="<?php echo ($movie['image']); ?>" alt="Кадр з фільму" class="img-fluid" />
-                    </div>
+                    <p class="review-content"><?php echo htmlspecialchars($review['review']); ?></p>
                 </div>
+                <?php endforeach; ?>
             </div>
         </div>
     </main>
