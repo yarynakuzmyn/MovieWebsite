@@ -20,14 +20,14 @@ if (session_status() === PHP_SESSION_NONE) {
                     <a class="nav-link" href="series.php">Серіали</a>
                 </li>
             </ul>
-            <form class="d-flex me-3">
-                <div class="input-group">
-                    <input class="form-control" type="search" placeholder="Пошук" aria-label="Search" />
-                    <button class="btn btn-outline-light" type="submit">
-                        Пошук
-                    </button>
-                </div>
-            </form>
+            <form class="d-flex me-3" action="search_results.php" method="GET">
+    <div class="input-group">
+        <input class="form-control" type="search" placeholder="Пошук" aria-label="Search" name="query" />
+        <button class="btn btn-outline-light" type="submit">
+            Пошук
+        </button>
+    </div>
+</form>
             <ul class="navbar-nav">
                 <?php if (isset($_SESSION['user'])): ?>
                 <li class="nav-item">
