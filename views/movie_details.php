@@ -179,7 +179,7 @@
                         </div>
                     </div>
                     <div class="review mt-3" style="display: none;">
-                        <textarea id="review-text" class="form-control" placeholder="Write your review..."></textarea>
+                        <textarea id="review-text" class="form-control" placeholder="Залиште свій відгук..."></textarea>
                         <button class="btn btn-primary mt-2" id="submit-review">Залишити відгук</button>
                     </div>
                 </div>
@@ -195,7 +195,7 @@
                 <?php foreach ($reviews as $review): ?>
                 <div class="review-frame">
                     <div class="review-header">
-                        <strong><?php echo htmlspecialchars($review['username']); ?></strong>
+                        <strong><?php echo ($review['username']); ?></strong>
                         <span class="review-date"><?php echo date('M d, Y', strtotime($review['created_at'])); ?></span>
                     </div>
                     <div class="review-rating">
@@ -210,7 +210,7 @@
                             }
                         ?>
                     </div>
-                    <p class="review-content"><?php echo htmlspecialchars($review['review']); ?></p>
+                    <p class="review-content"><?php echo ($review['review']); ?></p>
                 </div>
                 <?php endforeach; ?>
             </div>

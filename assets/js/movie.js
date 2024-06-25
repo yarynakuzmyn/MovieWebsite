@@ -104,7 +104,7 @@ document.addEventListener('DOMContentLoaded', function() {
             .then(response => response.json())
             .then(data => {
                 if (data.success) {
-                    alert('Review submitted successfully');
+                    alert('Відгук успішно відправлено!');
                 } else {
                     console.error('Error:', data.message);
                 }
@@ -150,7 +150,7 @@ document.addEventListener('DOMContentLoaded', function() {
     fetch(`get_movie_state.php?id=${movieId}`)
         .then(response => response.json())
         .then(data => {
-            console.log('Initial state:', data); // For debugging
+            console.log('Initial state:', data);
 
             if (data.is_favorite) {
                 toggleFavoriteIcon(true);

@@ -42,10 +42,7 @@
         $sql .= " AND c.name = :country";
         $params[':country'] = $_GET['country'];
     }
-    if (!empty($_GET['search'])) {
-        $sql .= " AND m.title_ukr AND m.title_orig LIKE :search";
-        $params[':search'] = '%' . $_GET['search'] . '%';
-    }
+
     if (!empty($_GET['search'])) {
         $sql .= " AND (m.title_ukr LIKE :search OR m.title_orig LIKE :search)";
         $params[':search'] = '%' . $_GET['search'] . '%';
