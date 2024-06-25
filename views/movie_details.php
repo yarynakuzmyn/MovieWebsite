@@ -181,7 +181,7 @@
                         </div>
                     </div>
                     <div class="review mt-3" style="display: none;">
-                        <textarea id="review-text" class="form-control" placeholder="Write your review..."></textarea>
+                        <textarea id="review-text" class="form-control" placeholder="Залиште свій відгук..."></textarea>
                         <button class="btn btn-primary mt-2" id="submit-review">Залишити відгук</button>
                     </div>
                 </div>
