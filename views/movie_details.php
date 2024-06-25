@@ -1,6 +1,6 @@
 ﻿<?php
     include __DIR__ . '/../server/db_connection.php';
-
+    session_start();
     if (!isset($_GET['id']) || !is_numeric($_GET['id'])) {
         echo "Invalid movie ID.";
         exit;
@@ -9,7 +9,7 @@
     $movie_id = $_GET['id'];
 
     try {
-        $stmt = $pdo->prepare("SELECT m.id, m.title_ukr, m.title_orig, m.description, m.image, m.year, c.name AS country, GROUP_CONCAT(DISTINCT g.name SEPARATOR ', ') AS genres, m.trailer_url
+        $stmt = $pdo->prepare("SELECT m.id, m.title_ukr, m.title_orig, m.description, m.image, m.year, GROUP_CONCAT(DISTINCT c.name SEPARATOR ', ') AS countries, GROUP_CONCAT(DISTINCT g.name SEPARATOR ', ') AS genres, m.trailer_url
                             FROM movies m
                             LEFT JOIN movie_country mc ON m.id = mc.movie_id
                             LEFT JOIN countries c ON mc.country_id = c.id
@@ -157,9 +157,11 @@
                                 <?php echo number_format($avg_rating, 1); ?></p>
                         </span>
                     </h1>
+                    <p><?php echo ($movie['title_orig']); ?></p>
 
                     <p id="movie-year"><strong>Рік:</strong> <?php echo ($movie['year']); ?></p>
                     <p id="movie-genre"><strong>Жанр:</strong> <?php echo ($movie['genres']); ?></p>
+                    <p id="movie-genre"><strong>Країна:</strong> <?php echo ($movie['countries']); ?></p>
                     <p id="movie-description"><strong>Опис:</strong>
                         <?php echo ($movie['description']); ?></p>
 
@@ -195,7 +197,7 @@
                 <?php foreach ($reviews as $review): ?>
                 <div class="review-frame">
                     <div class="review-header">
-                        <strong><?php echo htmlspecialchars($review['username']); ?></strong>
+                        <strong><?php echo($review['username']); ?></strong>
                         <span class="review-date"><?php echo date('M d, Y', strtotime($review['created_at'])); ?></span>
                     </div>
                     <div class="review-rating">
@@ -210,7 +212,7 @@
                             }
                         ?>
                     </div>
-                    <p class="review-content"><?php echo htmlspecialchars($review['review']); ?></p>
+                    <p class="review-content"><?php echo($review['review']); ?></p>
                 </div>
                 <?php endforeach; ?>
             </div>
@@ -218,8 +220,5 @@
     </main>
     <?php include __DIR__ . '/template/footer.html'; ?>
     <script src="../assets/js/movie.js"></script>
-
-
 </body>
-
 </html>
