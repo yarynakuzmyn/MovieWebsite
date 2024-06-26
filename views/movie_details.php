@@ -9,7 +9,10 @@
     $movie_id = $_GET['id'];
 
     try {
-        $stmt = $pdo->prepare("SELECT m.id, m.title_ukr, m.title_orig, m.description, m.image, m.year, GROUP_CONCAT(DISTINCT c.name SEPARATOR ', ') AS countries, GROUP_CONCAT(DISTINCT g.name SEPARATOR ', ') AS genres, m.trailer_url
+        $stmt = $pdo->prepare("SELECT m.id, m.title_ukr, m.title_orig, m.description, m.image, m.year, 
+                                GROUP_CONCAT(DISTINCT c.name SEPARATOR ', ') AS countries, 
+                                GROUP_CONCAT(DISTINCT g.name SEPARATOR ', ') AS genres, 
+                                m.trailer_url
                             FROM movies m
                             LEFT JOIN movie_country mc ON m.id = mc.movie_id
                             LEFT JOIN countries c ON mc.country_id = c.id
@@ -24,31 +27,50 @@
             echo "Movie not found.";
             exit;
         }
-    } catch (PDOException $e) {
-        echo "Error: " . $e->getMessage();
-        exit;
-    }
 
+    // Actors in the movie
+    $actors_query = "SELECT c.id, c.name, c.image, mc.role FROM cast c
+                    INNER JOIN movie_cast mc ON c.id = mc.cast_id
+                    WHERE mc.movie_id = ?";
+    $actors_stmt = $pdo->prepare($actors_query);
+    $actors_stmt->execute([$movie_id]);
+    $actors = $actors_stmt->fetchAll(PDO::FETCH_ASSOC);
+
+    // Average rating
     $rating_query = "SELECT AVG(rating) as avg_rating FROM reviews WHERE movie_id = ?";
     $rating_stmt = $pdo->prepare($rating_query);
     $rating_stmt->execute([$movie_id]);
     $avg_rating = $rating_stmt->fetch(PDO::FETCH_ASSOC)['avg_rating'];
 
+    // Reviews
     $reviews_query = "SELECT r.*, u.username FROM reviews r 
-                  JOIN users u ON r.user_id = u.id 
-                  WHERE r.movie_id = ?
-                  ORDER BY r.created_at DESC";
+    JOIN users u ON r.user_id = u.id 
+    WHERE r.movie_id = ?
+    ORDER BY r.created_at DESC";
     $reviews_stmt = $pdo->prepare($reviews_query);
     $reviews_stmt->execute([$movie_id]);
     $reviews = $reviews_stmt->fetchAll(PDO::FETCH_ASSOC);
+
+    } catch (PDOException $e) {
+        echo "Error: " . $e->getMessage();
+        exit;
+    }
 ?>
+
 <!DOCTYPE html>
 <html lang="en">
 
 <head>
-
     <?php include __DIR__ . '/template/header.html'; ?>
     <style>
+    .actor-link {
+            color: #333;
+            text-decoration: none;
+        }
+
+        .actor-link:hover {
+            color: blue;
+        }
     .stills {
         display: flex;
         flex-wrap: wrap;
@@ -133,6 +155,7 @@
     .review-content {
         margin-bottom: 0;
     }
+    
     </style>
 </head>
 
@@ -159,11 +182,15 @@
                     </h1>
                     <p><?php echo ($movie['title_orig']); ?></p>
 
-                    <p id="movie-year"><strong>Рік:</strong> <?php echo ($movie['year']); ?></p>
-                    <p id="movie-genre"><strong>Жанр:</strong> <?php echo ($movie['genres']); ?></p>
-                    <p id="movie-genre"><strong>Країна:</strong> <?php echo ($movie['countries']); ?></p>
-                    <p id="movie-description"><strong>Опис:</strong>
-                        <?php echo ($movie['description']); ?></p>
+                    <p><strong>Рік:</strong> <?php echo ($movie['year']); ?></p>
+                    <p><strong>Жанр:</strong> <?php echo ($movie['genres']); ?></p>
+                    <p><strong>Країна:</strong> <?php echo ($movie['countries']); ?></p>
+                    <p><strong>Актори:</strong>
+                        <?php foreach ($actors as $index => $actor): ?>
+                            <a href="actor.php?id=<?php echo ($actor['id']); ?>" style="color:#333; text-decoration: none;"><?php echo ($actor['name']); ?></a><?php if ($index < count($actors) - 1): ?>, <?php endif; ?>
+                        <?php endforeach; ?>
+                    </p>
+                    <p><strong>Опис:</strong> <?php echo ($movie['description']); ?></p>
 
                     <div class="actions">
                         <button class="btn btn-primary" id="add-to-watchlist">Буду дивитися</button>
