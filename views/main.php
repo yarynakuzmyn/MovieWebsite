@@ -96,7 +96,7 @@
                 </div>
             </div>
 
-            <h2>Фільми</h2>
+            <a href="films.php" style="color:black; text-decoration: none;"><h2>Фільми</h2></a>
             <div class="movie-grid">
                 <div class="movie-list">
                     <?php foreach ($films as $film): ?>
@@ -111,7 +111,7 @@
                 </div>
             </div>
 
-            <h2>Серіали</h2>
+            <a href="series.php" style="color:black; text-decoration: none;"><h2>Серіали</h2></a>
             <div class="movie-grid">
                 <div class="movie-list">
                     <?php foreach ($series as $serial): ?>
