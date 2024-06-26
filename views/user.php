@@ -56,8 +56,7 @@ function getUserMovieList($pdo, $user_id, $list) {
     $query = "SELECT m.id, m.title_ukr, m.title_orig, m.image 
               FROM user_movie_list uml 
               JOIN movies m ON uml.movie_id = m.id 
-              WHERE uml.user_id = ? AND uml.list = ? 
-            --   ORDER BY uml.created_at DESC 
+              WHERE uml.user_id = ? AND uml.list = ?
             ";
     $stmt = $pdo->prepare($query);
     $stmt->execute([$user_id, $list]);
@@ -69,7 +68,6 @@ function getUserFavorites($pdo, $user_id) {
               FROM liked l 
               JOIN movies m ON l.movie_id = m.id 
               WHERE l.user_id = ? 
-            --   ORDER BY l.created_at DESC 
               ";
     $stmt = $pdo->prepare($query);
     $stmt->execute([$user_id]);
@@ -193,19 +191,18 @@ $favorites = getUserFavorites($pdo, $user_id);
 
                         <a class="nav-link" id="v-pills-review-tab" data-toggle="pill" href="#v-pills-review" role="tab"
                             aria-controls="v-pills-review" aria-selected="false"><i
-                                class="bi bi-chat-right-dots"></i></i> Відгуки</a>
+                                class="bi bi-chat-right-dots-fill"></i></i> Відгуки</a>
 
                         <a class="nav-link" id="v-pills-watched-tab" data-toggle="pill" href="#v-pills-watched"
                             role="tab" aria-controls="v-pills-watched" aria-selected="false"><i
-                                class="fas fa-eye mr-2"></i> Переглянуто</a>
+                                class="bi bi-bookmark-check-fill mr-2"></i> Переглянуто</a>
 
                         <a class="nav-link" id="v-pills-watch-tab" data-toggle="pill" href="#v-pills-watch" role="tab"
-                            aria-controls="v-pills-watch" aria-selected="false"><i class="bi bi-eye mr-2"></i>
-                            Дивлюся</a>
+                            aria-controls="v-pills-watch" aria-selected="false"><i class="bi bi-eye-fill mr-2"></i> Дивлюся</a>
 
                         <a class="nav-link" id="v-pills-watchlist-tab" data-toggle="pill" href="#v-pills-watchlist"
                             role="tab" aria-controls="v-pills-watchlist" aria-selected="false"><i
-                                class="bi bi-eye mr-2"></i> Буду дивитися</a>
+                                class="bi bi-bookmark-plus-fill mr-2"></i> Буду дивитися</a>
 
                         <a class="nav-link" id="v-pills-fav_f-tab" data-toggle="pill" href="#v-pills-fav_f" role="tab"
                             aria-controls="v-pills-fav_f" aria-selected="false"><i class="bi bi-heart-fill mr-2"></i>
@@ -230,10 +227,10 @@ $favorites = getUserFavorites($pdo, $user_id);
                                 <?php foreach ($ratings as $item): ?>
                                 <a href="movie_details.php?id=<?php echo $item['id']; ?>" class="movie-link">
                                     <div class="movie-card">
-                                        <img src="<?php echo htmlspecialchars($item['image']); ?>" class="card-img-top"
-                                            alt="<?php echo htmlspecialchars($item['title_ukr']); ?>">
+                                        <img src="<?php echo ($item['image']); ?>" class="card-img-top"
+                                            alt="<?php echo ($item['title_ukr']); ?>">
                                         <div class="card-body">
-                                            <h3 class="card-title"><?php echo htmlspecialchars($item['title_ukr']); ?></h3>
+                                            <h3 class="card-title"><?php echo ($item['title_ukr']); ?></h3>
                                             <p class="card-text">
                                                 <small class="text-muted">
                                                     <?php
@@ -258,7 +255,7 @@ $favorites = getUserFavorites($pdo, $user_id);
                         <!-- Reviews Tab -->
                         <div class="movie-grid tab-pane fade" id="v-pills-review" role="tabpanel"
                             aria-labelledby="v-pills-review-tab">
-                            <h3><i class="bi bi-chat-right-dots"></i>Відгуки</h3>
+                            <h3><i class="bi bi-chat-right-dots"></i> Відгуки</h3>
                             <div class="movie-list">
                                 <?php foreach ($reviews as $item): ?>
                                 <a href="movie_details.php?id=<?php echo $item['id']; ?>" class="movie-link">
@@ -281,7 +278,7 @@ $favorites = getUserFavorites($pdo, $user_id);
                         <!-- Watched Tab -->
                         <div class="movie-grid tab-pane fade" id="v-pills-watched" role="tabpanel"
                             aria-labelledby="v-pills-watched-tab">
-                            <h3><i class="fas fa-eye mr-2"></i>Переглянуто</h3>
+                            <h3><i class="bi bi-bookmark-check mr-2"></i> Переглянуто</h3>
                             <div class="movie-list">
                                 <?php foreach ($watched as $movie): ?>
                                 <a href="movie_details.php?id=<?php echo $movie['id']; ?>" class="movie-link">
@@ -303,7 +300,7 @@ $favorites = getUserFavorites($pdo, $user_id);
                         <!-- Watching Tab -->
                         <div class="movie-grid tab-pane fade" id="v-pills-watch" role="tabpanel"
                             aria-labelledby="v-pills-watch-tab">
-                            <h3><i class="fas fa-eye mr-2"></i>Дивлюся</h3>
+                            <h3><i class="bi bi-eye mr-2"></i> Дивлюся</h3>
                             <div class="movie-list">
                                 <?php foreach ($watching as $movie): ?>
                                 <a href="movie_details.php?id=<?php echo $movie['id']; ?>" class="movie-link">
@@ -325,7 +322,7 @@ $favorites = getUserFavorites($pdo, $user_id);
                         <!-- Watchlist Tab -->
                         <div class="movie-grid tab-pane fade" id="v-pills-watchlist" role="tabpanel"
                             aria-labelledby="v-pills-watchlist-tab">
-                            <h3><i class="fas fa-eye mr-2"></i>Буду дивитися</h3>
+                            <h3><i class="bi bi-bookmark-plus mr-2"></i> Буду дивитися</h3>
                             <div class="movie-list">
                                 <?php foreach ($watchlist as $movie): ?>
                                 <a href="movie_details.php?id=<?php echo $movie['id']; ?>" class="movie-link">
@@ -346,7 +343,7 @@ $favorites = getUserFavorites($pdo, $user_id);
                         <!-- Favorites Tab -->
                         <div class="movie-grid tab-pane fade" id="v-pills-fav_f" role="tabpanel"
                             aria-labelledby="v-pills-fav_f-tab">
-                            <h3><i class="fas fa-heart mr-2"></i>Улюблені</h3>
+                            <h3><i class="bi bi-heart mr-2"></i> Улюблені</h3>
                             <div class="movie-list">
                                 <?php foreach ($favorites as $movie): ?>
                                 <a href="movie_details.php?id=<?php echo $movie['id']; ?>" class="movie-link">
@@ -368,9 +365,7 @@ $favorites = getUserFavorites($pdo, $user_id);
             </div>
         </div>
     </main>
-    <footer>
-        <p>&copy; 2024 Кіно Трекер.</p>
-    </footer>
+    <?php include __DIR__ . '/template/footer.html'; ?>
 
     <!-- Bootstrap JS and dependencies -->
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>

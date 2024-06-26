@@ -32,10 +32,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     $stmt = $pdo->prepare("INSERT INTO users (username, email, password) VALUES (:username, :email, :password)");
                     $stmt->execute([':username' => $username, ':email' => $email, ':password' => $password]);
 
-                    // Get the ID of the newly created user
+                    // Get the ID of created user
                     $user_id = $pdo->lastInsertId();
 
-                    // Store user info in session
+                    // Store user in session
                     $_SESSION['user'] = ['id' => $user_id, 'username' => $username, 'email' => $email];
 
                     header('Location: main.php');
