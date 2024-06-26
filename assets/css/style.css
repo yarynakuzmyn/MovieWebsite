@@ -92,7 +92,9 @@ main {
 }
 
 .poster img {
+    width: 100%;
     max-width: 300px;
+    height: auto;
 }
 
 .info h1 {
@@ -157,7 +159,8 @@ main {
 }
 
 .stills img {
-    max-width: 200px;
+    max-width: 100%;
+    height: auto;
 }
 
 
@@ -174,7 +177,8 @@ footer {
 
 /* Style each movie card */
 
-.movie-grid {
+.movie-grid,
+.movie-list {
     display: flex;
     flex-wrap: wrap;
     gap: 20px;
@@ -185,21 +189,14 @@ footer {
     text-decoration: none;
 }
 
-.movie-list {
-    display: flex;
-    flex-direction: row;
-    flex-wrap: wrap;
-    gap: 20px;
-    justify-content: center;
-}
-
 .movie-card {
+    flex: 1 1 calc(25% - 20px);
+    max-width: 200px;
     box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
     background-color: #fff;
     border-radius: 8px;
     overflow: hidden;
     text-align: center;
-    width: 200px;
     padding: 10px;
     margin: 20px 0;
 }
@@ -226,6 +223,10 @@ footer {
 .movie-card h3:hover {
     color: blue;
     text-decoration: none;
+}
+
+.movie-card a {
+    color: black;
 }
 
 .movie-card a:hover {
@@ -296,21 +297,57 @@ button:hover {
     align-items: center;
 }
 
-@media (min-width: 992px) {
-    .navbar .input-group {
-        width: 300px;
+
+/* Responsive movie card grid */
+
+@media (max-width: 1200px) {
+    .movie-card {
+        flex: 1 1 calc(33.33% - 20px);
     }
 }
 
-.rating .stars i {
-    cursor: pointer;
-    color: gray;
+@media (max-width: 992px) {
+    .movie-card {
+        flex: 1 1 calc(50% - 20px);
+    }
 }
 
-.rating .stars i.active {
-    color: gold;
+@media (max-width: 768px) {
+    /* .movie-card {
+        flex: 1 1 calc(100% - 20px);
+    } */
+    .movie-card img {
+        width: 100%;
+    }
+    main {
+        padding: 1rem;
+    }
+    .movie-details {
+        flex-direction: column;
+        align-items: center;
+    }
+    .poster img {
+        max-width: 100%;
+    }
+    .info h1 {
+        font-size: 1.5rem;
+    }
+    .info p,
+    .actions button {
+        font-size: 1rem;
+    }
 }
 
-.bi-heart.red {
-    color: red;
+@media (max-width: 576px) {
+    .movie-grid {
+        display: flex;
+        /* flex-direction: column; */
+        gap: 10px;
+    }
+    /* .movie-card {
+        max-width: 100%;
+    } */
+    .movie-card img {
+        width: 100%;
+    }
 }
