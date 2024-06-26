@@ -68,7 +68,7 @@
             text-decoration: none;
         }
 
-        .actor-link:hover {
+    .actor-link:hover {
             color: blue;
         }
     .stills {
@@ -187,7 +187,7 @@
                     <p><strong>Країна:</strong> <?php echo ($movie['countries']); ?></p>
                     <p><strong>Актори:</strong>
                         <?php foreach ($actors as $index => $actor): ?>
-                            <a href="actor.php?id=<?php echo ($actor['id']); ?>" style="color:#333; text-decoration: none;"><?php echo ($actor['name']); ?></a><?php if ($index < count($actors) - 1): ?>, <?php endif; ?>
+                            <a href="actor.php?id=<?php echo ($actor['id']); ?>" class="actor-link"><?php echo ($actor['name']); ?></a><?php if ($index < count($actors) - 1): ?>, <?php endif; ?>
                         <?php endforeach; ?>
                     </p>
                     <p><strong>Опис:</strong> <?php echo ($movie['description']); ?></p>
