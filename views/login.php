@@ -18,7 +18,7 @@
             header('Location: main.php');
             exit;
         } else {
-            $error = "Invalid email or password.";
+            $error = "Неправильний email або пароль.";
         }
     }
 ?>
